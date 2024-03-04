@@ -1,10 +1,10 @@
 import {BrowserRouter} from "react-router-dom";
-
+import UserProvider from "./context/User";
 
 function Providers({children}: {children: React.ReactNode}) {
   return (
     <BrowserRouter>
-          {children}
+      <UserProvider>{children}</UserProvider>
     </BrowserRouter>
   );
 }

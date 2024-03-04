@@ -1,6 +1,8 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 import Button, { BUTTON_TYPE_CLASSES } from "../components/Button";
 import axios from "axios";
+import { UserContext } from "../context/User";
+import { useNavigate } from "react-router-dom";
 
 const defaultFormFields = {
   name: "",
@@ -12,13 +14,17 @@ const defaultFormFields = {
 };
 
 function Register() {
+  const navigate = useNavigate()
   const [formFields, setFormFields] = useState(defaultFormFields);
   const [file, setFile] = useState<File>()
+  const { userData, setUserData } = useContext(UserContext)
+  if(userData) navigate('/dashboard')
   const {name, surname, phone, email, password,image} = formFields;
 
   async function handleSubmit(e: React.ChangeEvent<HTMLFormElement>){
     e.preventDefault();
-    const newFormFields = { name, surname, phone, email, password }
+    const profilePictureName = file?.name
+    const newFormFields = { name, surname, phone, email, password, profilePictureName}
 
     const { data } = await axios.post('/register', newFormFields);
     const formData = new FormData()
@@ -28,31 +34,33 @@ function Register() {
     const res = await axios.post('/register/profile',formData)
     const data2 = res.data
     console.log(data, data2)
+    setUserData({id: data.id, name, surname, email});
   }
+  console.log(userData)
 
   function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
     const {name, value} = e.target;
     setFormFields({...formFields, [name]: value});
   }
 
-  function convertToBase64(e: React.ChangeEvent<HTMLInputElement>) {
-    const {name} = e.target;
-    const reader = new FileReader()
-    if(e.target.files)
-        reader.readAsDataURL(e.target.files[0])
-        reader.onload = () => {
-            console.log(reader.result) // base64encoded string
-            setFormFields({...formFields, [name]: reader.result});
-        }
-        reader.onerror = error => {
-            console.log("Error", error)
-        }
-  }
+  // function convertToBase64(e: React.ChangeEvent<HTMLInputElement>) {
+  //   const {name} = e.target;
+  //   const reader = new FileReader()
+  //   if(e.target.files)
+  //       reader.readAsDataURL(e.target.files[0])
+  //       reader.onload = () => {
+  //           console.log(reader.result) // base64encoded string
+  //           setFormFields({...formFields, [name]: reader.result});
+  //       }
+  //       reader.onerror = error => {
+  //           console.log("Error", error)
+  //       }
+  // }
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>){
     if(e.target.files){
       setFile(e.target.files[0])
       console.log(e.target.files[0])}
-      convertToBase64(e)
+      // convertToBase64(e)
   }
   
 

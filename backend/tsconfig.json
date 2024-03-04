@@ -9,7 +9,9 @@
 
     "strict": true,                                      /* Enable all strict type-checking options. */
     "outDir": "./dist",
-    "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
+    "skipLibCheck": true       ,                          /* Skip type checking all .d.ts files. */
+    "allowImportingTsExtensions":true,
+    "noEmit": true
   }
 }
 

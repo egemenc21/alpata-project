@@ -10,6 +10,7 @@ async function main() {
       email: 'test@test.com',
       name: 'Test',
       surname:'User',
+      phone:'987',
       password: `$2y$12$GBfcgD6XwaMferSOdYGiduw3Awuo95QAPhxFE0oNJ.Ds8qj3pzEZy`,
       profile_picture:'test',      
     }
