@@ -2,7 +2,7 @@ import {useContext, useState} from "react";
 import Button, { BUTTON_TYPE_CLASSES } from "../components/Button";
 import axios from "axios";
 import { UserContext } from "../context/User";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const defaultFormFields = {
   name: "",
@@ -66,7 +66,7 @@ function Register() {
 
   return (
     <section className="flex flex-col h-screen justify-center items-center gap-5 bg-blue-500 text-gray-100">
-      <h2 className="text-lg">Do you have an account? Please register!</h2>
+      <h2 className="text-lg">Please register!</h2>
       <form className="flex flex-col gap-5 text-gray-700" onSubmit={handleSubmit}>
         <input
           type="text"
@@ -120,6 +120,11 @@ function Register() {
         <Button type="submit" buttonType={BUTTON_TYPE_CLASSES.inverted}> Register </Button>
         
       </form>
+      <div className="flex flex-col items-center gap-2">
+       <h3>Already have an account ? </h3>
+      <Link to='/' className="underline">Go to sign-in page</Link> 
+      </div>
+      
     </section>
   );
 }

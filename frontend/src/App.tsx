@@ -3,6 +3,7 @@ import {Route, Routes} from "react-router-dom";
 import Register from "./pages/Register";
 import axios from "axios";
 import Dashboard from "./pages/Dashboard";
+import SignIn from "./pages/SignIn";
 
 function App() {
   axios.defaults.baseURL = 'http://localhost:4000'
@@ -11,7 +12,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<div>SignIn</div>} />
+        <Route path="/" element={<SignIn/>} />
         <Route path="/register" element={<Register/>} />
         <Route path="/dashboard" element={<Dashboard/>} />
       </Routes>
