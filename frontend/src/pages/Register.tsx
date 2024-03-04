@@ -2,23 +2,32 @@ import {useState} from "react";
 import Button, { BUTTON_TYPE_CLASSES } from "../components/Button";
 import axios from "axios";
 
-// Kayıt olma sayfası (ad, soyad, email, telefon, şifre, profil resmi yükleme)
 const defaultFormFields = {
   name: "",
   surname: "",
   phone: "",
   email: "",
   password: "",
-  image: "",
+  image:""
 };
+
 function Register() {
   const [formFields, setFormFields] = useState(defaultFormFields);
-  const {name, surname, phone, email, password, image} = formFields;
+  const [file, setFile] = useState<File>()
+  const {name, surname, phone, email, password,image} = formFields;
 
   async function handleSubmit(e: React.ChangeEvent<HTMLFormElement>){
     e.preventDefault();
-    const { data } = await axios.post('/register', formFields);
-    console.log(data)
+    const newFormFields = { name, surname, phone, email, password }
+
+    const { data } = await axios.post('/register', newFormFields);
+    const formData = new FormData()
+    if (file) {
+      formData.append('file', file);
+   }   
+    const res = await axios.post('/register/profile',formData)
+    const data2 = res.data
+    console.log(data, data2)
   }
 
   function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -38,6 +47,12 @@ function Register() {
         reader.onerror = error => {
             console.log("Error", error)
         }
+  }
+  function handleImageChange(e: React.ChangeEvent<HTMLInputElement>){
+    if(e.target.files){
+      setFile(e.target.files[0])
+      console.log(e.target.files[0])}
+      convertToBase64(e)
   }
   
 
@@ -91,8 +106,8 @@ function Register() {
           onChange={handleOnChange}
         />
         <div className="text-gray-100">Upload a profile photo </div>
-        <input type="file" accept="image/*" onChange={convertToBase64} name="image"/>
-        {image == '' ? null : <img src={image} alt="Your profile picture" width={100} height={100}  />}
+        <input type="file" onChange={handleImageChange} name="image"/>
+        {image == "" ? null : <img src={image} alt="Your profile picture" width={100} height={100}  />}
         
         <Button type="submit" buttonType={BUTTON_TYPE_CLASSES.inverted}> Register </Button>
         
