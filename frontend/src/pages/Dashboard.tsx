@@ -65,8 +65,20 @@ function Dashboard() {
   return (
     <>
       <Navigation />
-      <section className="flex flex-col h-screen justify-center items-center gap-10">
-        {/* <div className="flex flex-col gap-10"> */}
+      <section className="flex flex-col h-screen mt-[150px] items-center gap-10">
+        <div className="flex max-lg:flex-col w-full flex-row gap-10 p-4 justify-center">
+        <ul className="">
+            <li className="flex flex-wrap gap-10 p-2 border-b border-black border-solid">
+              <ListItem title="Name"/>
+              <ListItem title="Starting Date"/>
+              <ListItem title="End Date"/>
+              <ListItem title="Description"/>
+              <ListItem title="Removed"/>
+            </li>
+            {meetings.map((meeting) => (
+              <MeetingItem key={meeting.id} meeting={meeting} />
+            ))}
+          </ul>
           <form onSubmit={handleSubmit} className="flex flex-col gap-10">
             <input
               type="text"
@@ -98,21 +110,9 @@ function Dashboard() {
             ></textarea>
             <Button buttonType={BUTTON_TYPE_CLASSES.base}>Add Meeting</Button>
           </form>
-          <ul className=" ">
-            <li className="flex gap-10 w-full p-2">
-              <ListItem title="Name"/>
-              <ListItem title="Starting Date"/>
-              <ListItem title="End Date"/>
-              <ListItem title="Description"/>
-              <ListItem title="Removed"/>
+         
 
-            </li>
-            {meetings.map((meeting) => (
-              <MeetingItem key={meeting.id} meeting={meeting} />
-            ))}
-          </ul>
-
-        {/* </div> */}
+        </div>
       </section>
     </>
   );

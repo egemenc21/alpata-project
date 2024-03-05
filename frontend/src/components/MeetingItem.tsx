@@ -32,13 +32,13 @@ function MeetingItem({meeting}: MeetingProps) {
   };
 
   return (
-    <li className="flex gap-10 p-2">
+    <li className="flex flex-wrap gap-10 p-4 ">
       <ListItem title={meeting.title}/>
       <ListItem title={new Date(meeting.startDate).toLocaleDateString("en-GB")}/>
       <ListItem title={new Date(meeting.endDate).toLocaleDateString("en-GB")}/>
       <ListItem title={meeting.description}/>
 
-      <button onClick={() => handleDelete(meeting.id)} className="w-[100px] text-start">X</button>
+      <button onClick={() => handleDelete(meeting.id)} className="w-[100px] text-center">X</button>
     </li>
   );
 }
