@@ -2,6 +2,7 @@ import axios from "axios";
 import {useContext} from "react";
 import {MeetingsContext} from "../context/Meeting";
 import ListItem from "./ListItem";
+import {FaExternalLinkAlt} from "react-icons/fa";
 
 interface Document {
   id: number;
@@ -47,7 +48,14 @@ function MeetingItem({meeting}: MeetingProps) {
       />
       <ListItem title={new Date(meeting.endDate).toLocaleDateString("en-GB")} />
       <ListItem title={meeting.description} />
-      <a href={`http://localhost:4000/${meeting.document[0].filename}`} target="_blank">Go to document</a>
+
+      <a
+        href={`http://localhost:4000/public/files/${meeting.document[0].filename}`}
+        target="_blank"
+        className="flex items-center gap-2"
+      >
+        Go to document <FaExternalLinkAlt size={20} />
+      </a>
 
       <button
         onClick={() => handleDelete(meeting.id)}

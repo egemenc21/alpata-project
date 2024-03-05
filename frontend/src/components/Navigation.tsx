@@ -7,6 +7,7 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {MeetingsContext} from "../context/Meeting";
 
+
 function Navigation() {
   const navigate = useNavigate();
   const {userData, setUserData} = useContext(UserContext);

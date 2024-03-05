@@ -9,20 +9,22 @@ import MeetingItem, {Meeting} from "../components/MeetingItem";
 import {MeetingsContext} from "../context/Meeting";
 import ListItem from "../components/ListItem";
 
+const emptyFormFields = {
+  id: 0,
+  title: "",
+  startDate: "",
+  endDate: "",
+  description: "",
+  authorId: 0,
+  document: [],
+};
+
 function Dashboard() {
   const {userData} = useContext(UserContext);
   const {meetings, setMeetings} = useContext(MeetingsContext);
   const [file, setFile] = useState<File>();
-  const [formFields, setFormFields] = useState<Meeting>({
-    id: 0,
-    title: "",
-    startDate: "",
-    endDate: "",
-    description: "",
-    authorId: 0,
-  });
-  const {title, startDate, endDate, description, authorId} = formFields;
-  
+  const [formFields, setFormFields] = useState<Meeting>(emptyFormFields);
+  const {title, startDate, endDate, description} = formFields;
 
   useEffect(() => {
     fetchMeetings();
@@ -62,14 +64,7 @@ function Dashboard() {
       await axios.post("/meetings", formData);
       await fetchMeetings();
 
-      setFormFields({
-        id: 0,
-        title: "",
-        startDate: "",
-        endDate: "",
-        description: "",
-        authorId: 0
-      });
+      setFormFields(emptyFormFields);
     }
   };
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -89,6 +84,7 @@ function Dashboard() {
               <ListItem title="Starting Date" />
               <ListItem title="End Date" />
               <ListItem title="Description" />
+              <ListItem title="Document Link" />
               <ListItem title="Removed" />
             </li>
             {meetings.map((meeting) => (
