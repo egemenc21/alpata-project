@@ -1,10 +1,13 @@
 import {BrowserRouter} from "react-router-dom";
 import UserProvider from "./context/User";
+import MeetingsProvider from "./context/Meeting";
 
 function Providers({children}: {children: React.ReactNode}) {
   return (
     <BrowserRouter>
-      <UserProvider>{children}</UserProvider>
+      <UserProvider>
+        <MeetingsProvider>{children}</MeetingsProvider>
+      </UserProvider>
     </BrowserRouter>
   );
 }

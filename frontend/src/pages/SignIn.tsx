@@ -1,6 +1,6 @@
 // interface SignInProps {}
 
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {UserContext} from "../context/User";
 import axios from "axios";
@@ -17,7 +17,11 @@ function SignIn() {
   const {email, password} = formFields;
   const {userData, setUserData} = useContext(UserContext);
 
-  if (userData) navigate("/dashboard");
+  useEffect(() => {
+    if (userData && userData.id) {
+      navigate("/dashboard");
+    }
+  }, [userData, navigate]);
 
   async function handleSubmit(e: React.ChangeEvent<HTMLFormElement>) {
     e.preventDefault();

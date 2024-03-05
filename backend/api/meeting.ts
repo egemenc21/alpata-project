@@ -6,8 +6,13 @@ import { parseISO } from "date-fns";
 const router = express.Router();
 
 //Get all meetings
-router.get("/", async (req, res) => {
-  const meetings = await prisma.meeting.findMany();
+router.get("/:id", async (req, res) => {
+  const authorId = parseInt(req.params.id);
+  const meetings = await prisma.meeting.findMany({
+    where: {
+      authorId
+    }
+  });
   res.json(meetings);
 });
 
@@ -47,6 +52,7 @@ router.put('/:id', async (req, res) => {
   });
 
 //Delete a meeting
+
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     await prisma.meeting.delete({

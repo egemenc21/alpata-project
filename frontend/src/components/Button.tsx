@@ -1,4 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
+import cn from "classnames";
 import {ButtonHTMLAttributes} from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -13,10 +14,11 @@ function BaseButton({
   children,
   onClick,
   type = "submit",
+  className
 }: ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button
-      className="p-4 bg-blue-700 text-white rounded-lg"
+      className={cn("p-4 bg-blue-700 text-white rounded-lg", className)}  
       onClick={onClick}
       type={type}
     >
@@ -29,10 +31,11 @@ function InvertedButton({
   children,
   onClick,
   type = "submit",
+  className
 }: ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button
-      className="p-4 bg-blue-300 text-gray-700 rounded-lg"
+      className={cn("p-4 bg-blue-300 text-gray-700 rounded-lg",className)}
       onClick={onClick}
       type={type}
     >
@@ -48,10 +51,10 @@ const getButton = (buttonType = BUTTON_TYPE_CLASSES.base) =>
 
   }[buttonType]);
 
-function Button({children, onClick, buttonType, type}: ButtonProps) {
+function Button({children, onClick, buttonType, type, className}: ButtonProps) {
   const CustomButton = getButton(buttonType);
   return (
-    <CustomButton onClick={onClick} type={type}>
+    <CustomButton onClick={onClick} type={type} className={className}>
       {children}
     </CustomButton>
   );

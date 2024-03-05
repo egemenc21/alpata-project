@@ -35,7 +35,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     axios.get('/me').then((response) => {
         setUserData(response.data)
-        console.log(userData)
+        console.log(userData, 'userdata2')
     })
   }, [])
 

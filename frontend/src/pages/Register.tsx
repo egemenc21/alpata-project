@@ -1,8 +1,8 @@
-import {useContext, useState} from "react";
-import Button, { BUTTON_TYPE_CLASSES } from "../components/Button";
+import {useContext, useEffect, useState} from "react";
+import Button, {BUTTON_TYPE_CLASSES} from "../components/Button";
 import axios from "axios";
-import { UserContext } from "../context/User";
-import { Link, useNavigate } from "react-router-dom";
+import {UserContext} from "../context/User";
+import {Link, useNavigate} from "react-router-dom";
 
 const defaultFormFields = {
   name: "",
@@ -10,30 +10,45 @@ const defaultFormFields = {
   phone: "",
   email: "",
   password: "",
-  image:""
+  image: "",
 };
 
 function Register() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [formFields, setFormFields] = useState(defaultFormFields);
-  const [file, setFile] = useState<File>()
-  const { userData, setUserData } = useContext(UserContext)
-  if(userData) navigate('/dashboard')
-  const {name, surname, phone, email, password,image} = formFields;
+  const [file, setFile] = useState<File>();
+  const {userData, setUserData} = useContext(UserContext);
 
-  async function handleSubmit(e: React.ChangeEvent<HTMLFormElement>){
+  useEffect(() => {
+    if (userData && userData.id) {
+      navigate("/dashboard");
+    }
+  }, [userData, navigate]);
+
+  const {name, surname, phone, email, password, image} = formFields;
+
+  async function handleSubmit(e: React.ChangeEvent<HTMLFormElement>) {
     e.preventDefault();
-    const profilePictureName = file?.name
-    const newFormFields = { name, surname, phone, email, password, profilePictureName}
-
-    const { data } = await axios.post('/register', newFormFields);
-    const formData = new FormData()
+    const profilePictureName = file?.name;
+    const newFormFields = {
+      name,
+      surname,
+      phone,
+      email,
+      password,
+      profilePictureName,
+    };
+    const formData = new FormData();
     if (file) {
-      formData.append('file', file);
-   }   
-    const res = await axios.post('/register/profile',formData)
-    const data2 = res.data
-    console.log(data, data2)
+      formData.append("file", file);
+    }
+    const res = await axios.post("/register/profile", formData);
+    const {data} = await axios.post("/register", newFormFields);
+    console.log(data)    
+    const data2 = res.data;
+    console.log(data2);
+
+    
     setUserData({id: data.id, name, surname, email});
   }
   console.log(userData)
@@ -56,18 +71,20 @@ function Register() {
   //           console.log("Error", error)
   //       }
   // }
-  function handleImageChange(e: React.ChangeEvent<HTMLInputElement>){
-    if(e.target.files){
-      setFile(e.target.files[0])
-      console.log(e.target.files[0])}
-      // convertToBase64(e)
+  function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (e.target.files) {
+      setFile(e.target.files[0]);
+    }
+    // convertToBase64(e)
   }
-  
 
   return (
     <section className="flex flex-col h-screen justify-center items-center gap-5 bg-blue-500 text-gray-100">
       <h2 className="text-lg">Please register!</h2>
-      <form className="flex flex-col gap-5 text-gray-700" onSubmit={handleSubmit}>
+      <form
+        className="flex flex-col gap-5 text-gray-700"
+        onSubmit={handleSubmit}
+      >
         <input
           type="text"
           name="name"
@@ -114,17 +131,27 @@ function Register() {
           onChange={handleOnChange}
         />
         <div className="text-gray-100">Upload a profile photo </div>
-        <input type="file" onChange={handleImageChange} name="image"/>
-        {image == "" ? null : <img src={image} alt="Your profile picture" width={100} height={100}  />}
-        
-        <Button type="submit" buttonType={BUTTON_TYPE_CLASSES.inverted}> Register </Button>
-        
+        <input type="file" onChange={handleImageChange} name="image" />
+        {image == "" ? null : (
+          <img
+            src={image}
+            alt="Your profile picture"
+            width={100}
+            height={100}
+          />
+        )}
+
+        <Button type="submit" buttonType={BUTTON_TYPE_CLASSES.inverted}>
+          {" "}
+          Register{" "}
+        </Button>
       </form>
       <div className="flex flex-col items-center gap-2">
-       <h3>Already have an account ? </h3>
-      <Link to='/' className="underline">Go to sign-in page</Link> 
+        <h3>Already have an account ? </h3>
+        <Link to="/" className="underline">
+          Go to sign-in page
+        </Link>
       </div>
-      
     </section>
   );
 }

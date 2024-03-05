@@ -109,6 +109,10 @@ router.post('/sign-in', async (req, res) => {
 } )
 
 router.post("/register/profile", upload.single("file"), function (req, res, next) {
-  console.log(req.file);
+  res.json('image uploaded')
+});
+
+router.post('/sign-out', (req, res) => {
+  res.cookie('token', '').json('Sign out has been successful');
 });
 module.exports = router;
