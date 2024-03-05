@@ -43,7 +43,6 @@ router.get("/me", (req, res) => {
 router.post("/register", upload.single("file"), async (req, res) => {
   const {name, surname, phone, email, password} = req.body;
   const hashedPassword = bcrypt.hashSync(password, bcryptSalt);
-  console.log(req.file)
 
   if (req.file?.filename) {
     try {

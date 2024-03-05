@@ -11,9 +11,8 @@ dotenv.config();
 
 const allRoutes = require('./api/index.ts');
 
-
 app.use(express.json({limit: "50mb"}));
-app.use("/public/images/", express.static(__dirname + "/public/images/"));
+app.use("/public/", express.static(__dirname + "/public/"));
 app.use(
   express.urlencoded({limit: "50mb", extended: true, parameterLimit: 50000})
 );

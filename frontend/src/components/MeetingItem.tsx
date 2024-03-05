@@ -3,6 +3,13 @@ import {useContext} from "react";
 import {MeetingsContext} from "../context/Meeting";
 import ListItem from "./ListItem";
 
+interface Document {
+  id: number;
+  filename: string;
+  link: string;
+  meetingId: number;
+}
+
 export interface Meeting {
   id: number;
   title: string;
@@ -10,6 +17,7 @@ export interface Meeting {
   endDate: string;
   description: string;
   authorId: number;
+  document: Document[];
 }
 
 interface MeetingProps {
@@ -33,12 +41,20 @@ function MeetingItem({meeting}: MeetingProps) {
 
   return (
     <li className="flex flex-wrap gap-10 p-4 ">
-      <ListItem title={meeting.title}/>
-      <ListItem title={new Date(meeting.startDate).toLocaleDateString("en-GB")}/>
-      <ListItem title={new Date(meeting.endDate).toLocaleDateString("en-GB")}/>
-      <ListItem title={meeting.description}/>
+      <ListItem title={meeting.title} />
+      <ListItem
+        title={new Date(meeting.startDate).toLocaleDateString("en-GB")}
+      />
+      <ListItem title={new Date(meeting.endDate).toLocaleDateString("en-GB")} />
+      <ListItem title={meeting.description} />
+      <a href={`http://localhost:4000/${meeting.document[0].filename}`} target="_blank">Go to document</a>
 
-      <button onClick={() => handleDelete(meeting.id)} className="w-[100px] text-center">X</button>
+      <button
+        onClick={() => handleDelete(meeting.id)}
+        className="w-[100px] text-center"
+      >
+        X
+      </button>
     </li>
   );
 }
