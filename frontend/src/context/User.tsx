@@ -9,6 +9,7 @@ export interface UserProps {
   email: string | null
   name: string | null
   surname: string | null
+  profile_picture:string | null
 
 }
 
@@ -22,6 +23,7 @@ const defaultUserData: UserProps = {
   email: '',
   name: '',
   surname: '',
+  profile_picture:''
 }
 
 export const UserContext = createContext<UserContextProps>({
@@ -32,10 +34,11 @@ export const UserContext = createContext<UserContextProps>({
 function UserProvider({ children }: { children: React.ReactNode }) {
   const [userData, setUserData] = useState<UserProps | null>(null)
 
+  //User data is fetched from the token after refresh
   useEffect(() => {
     axios.get('/me').then((response) => {
         setUserData(response.data)
-        console.log(userData, 'userdata2')
+        console.log(response.data)
     })
   }, [])
 

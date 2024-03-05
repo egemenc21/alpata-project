@@ -29,29 +29,19 @@ function Register() {
 
   async function handleSubmit(e: React.ChangeEvent<HTMLFormElement>) {
     e.preventDefault();
-    const profilePictureName = file?.name;
-    const newFormFields = {
-      name,
-      surname,
-      phone,
-      email,
-      password,
-      profilePictureName,
-    };
+    
     const formData = new FormData();
     if (file) {
       formData.append("file", file);
-    }
-    const res = await axios.post("/register/profile", formData);
-    const {data} = await axios.post("/register", newFormFields);
-    console.log(data)    
-    const data2 = res.data;
-    console.log(data2);
-
-    
-    setUserData({id: data.id, name, surname, email});
+      formData.append("name", name)
+      formData.append("surname", surname)
+      formData.append("phone", phone)
+      formData.append("email", email)
+      formData.append("password", password)
+    }    
+    const {data} = await axios.post("/register", formData);    
+    setUserData({id: data.id, name, surname, email, profile_picture:data.profile_picture});
   }
-  console.log(userData)
 
   function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
     const {name, value} = e.target;
@@ -131,7 +121,7 @@ function Register() {
           onChange={handleOnChange}
         />
         <div className="text-gray-100">Upload a profile photo </div>
-        <input type="file" onChange={handleImageChange} name="image" />
+        <input type="file" onChange={handleImageChange} name="file" />
         {image == "" ? null : (
           <img
             src={image}

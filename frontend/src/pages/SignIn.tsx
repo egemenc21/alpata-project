@@ -27,6 +27,7 @@ function SignIn() {
     e.preventDefault();
     const {data} = await axios.post("/sign-in", formFields);
     setUserData(data);
+    console.log(data)
   }
 
   function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {

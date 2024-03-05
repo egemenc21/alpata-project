@@ -1,6 +1,7 @@
 import axios from "axios";
 import {useContext} from "react";
 import {MeetingsContext} from "../context/Meeting";
+import ListItem from "./ListItem";
 
 export interface Meeting {
   id: number;
@@ -31,11 +32,13 @@ function MeetingItem({meeting}: MeetingProps) {
   };
 
   return (
-    <li>
-      {meeting.title} -{" "}
-      {new Date(meeting.startDate).toLocaleDateString("en-GB")} -{" "}
-      {new Date(meeting.endDate).toLocaleDateString("en-GB")}
-      <button onClick={() => handleDelete(meeting.id)}>Delete</button>
+    <li className="flex gap-10 p-2">
+      <ListItem title={meeting.title}/>
+      <ListItem title={new Date(meeting.startDate).toLocaleDateString("en-GB")}/>
+      <ListItem title={new Date(meeting.endDate).toLocaleDateString("en-GB")}/>
+      <ListItem title={meeting.description}/>
+
+      <button onClick={() => handleDelete(meeting.id)} className="w-[100px] text-start">X</button>
     </li>
   );
 }

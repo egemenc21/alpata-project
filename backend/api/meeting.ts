@@ -60,6 +60,9 @@ router.delete('/:id', async (req, res) => {
     });
     res.json({ message: 'Meeting deleted' });
   });
+
+
+
   
  
 

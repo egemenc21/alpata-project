@@ -20,14 +20,16 @@ function Navigation() {
 
   async function handleOnClick() {
     const {data} = await axios.post("/sign-out");
-    setUserData({id: 0, email: "", name: "", surname: ""});
+    setUserData({id: 0, email: "", name: "", surname: "", profile_picture : ""});
     setMeetings([])
     console.log(data);
   }
+  
 
   return (
     <nav className="p-4 flex gap-5 justify-evenly items-center bg-blue-700 text-gray-100 flex-wrap">
       <div className="flex flex-wrap gap-5">
+        <img src={"http://localhost:4000/public/images/" + userData?.profile_picture} alt="Profile Picture" />
         <div>
           {userData?.name} {userData?.surname}
         </div>
@@ -41,6 +43,7 @@ function Navigation() {
       >
         Sign out
       </Button>
+
     </nav>
   );
 }

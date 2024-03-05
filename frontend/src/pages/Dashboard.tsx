@@ -7,6 +7,7 @@ import Button, {BUTTON_TYPE_CLASSES} from "../components/Button";
 import Navigation from "../components/Navigation";
 import MeetingItem, {Meeting} from "../components/MeetingItem";
 import {MeetingsContext} from "../context/Meeting";
+import ListItem from "../components/ListItem";
 
 function Dashboard() {
   const {userData} = useContext(UserContext);
@@ -26,9 +27,7 @@ function Dashboard() {
 
   const fetchMeetings = async () => {
     if (userData && userData.id) {
-      const response = await axios.get<Meeting[]>(
-        `/meetings/${userData.id}`
-      );
+      const response = await axios.get<Meeting[]>(`/meetings/${userData.id}`);
       setMeetings(response.data);
     }
   };
@@ -62,48 +61,58 @@ function Dashboard() {
     }
   };
 
-  // const newStartDate = new Date(formData.startDate)
-  //   console.log(newStartDate)
+
   return (
     <>
       <Navigation />
-      <section className="flex flex-col h-screen justify-center items-center">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-10">
-          <input
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            placeholder="Meeting Name"
-            required
-          />
-          <input
-            type="date"
-            name="startDate"
-            value={formData.startDate}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="date"
-            name="endDate"
-            value={formData.endDate}
-            onChange={handleChange}
-            required
-          />
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            placeholder="Description"
-          ></textarea>
-          <Button buttonType={BUTTON_TYPE_CLASSES.base}>Add Meeting</Button>
-        </form>
-        <ul>
-          {meetings.map((meeting) => (
-            <MeetingItem meeting={meeting} />
-          ))}
-        </ul>
+      <section className="flex flex-col h-screen justify-center items-center gap-10">
+        {/* <div className="flex flex-col gap-10"> */}
+          <form onSubmit={handleSubmit} className="flex flex-col gap-10">
+            <input
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              placeholder="Meeting Name"
+              required
+            />
+            <input
+              type="date"
+              name="startDate"
+              value={formData.startDate}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="date"
+              name="endDate"
+              value={formData.endDate}
+              onChange={handleChange}
+              required
+            />
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="Description"
+            ></textarea>
+            <Button buttonType={BUTTON_TYPE_CLASSES.base}>Add Meeting</Button>
+          </form>
+          <ul className=" ">
+            <li className="flex gap-10 w-full p-2">
+              <ListItem title="Name"/>
+              <ListItem title="Starting Date"/>
+              <ListItem title="End Date"/>
+              <ListItem title="Description"/>
+              <ListItem title="Removed"/>
+
+            </li>
+            {meetings.map((meeting) => (
+              <MeetingItem key={meeting.id} meeting={meeting} />
+            ))}
+          </ul>
+
+        {/* </div> */}
       </section>
     </>
   );
