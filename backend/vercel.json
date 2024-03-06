@@ -1,13 +1,16 @@
 {
-    "version": 2,
-    "builds": [
-      { "src": "backend/index.ts", "use": "@now/node" }
-    ],
-    "routes": [
-      { "src": "/api/(.*)", "dest": "backend/api/index.ts" },
-      { "src": "/api/(.*)", "dest": "backend/api/auth.ts" },
-      { "src": "/api/(.*)", "dest": "backend/api/meeting.ts" },
-      { "src": "/(.*)", "dest": "backend/index.ts" }
-    ]
-  }
-  
+  "version": 2,
+  "builds": [
+    {
+      "src": "dist/index.js",
+      "use": "@vercel/node",
+      "config": {"includeFiles": ["dist/**"]}
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "dist/index.js"
+    }
+  ]
+}
