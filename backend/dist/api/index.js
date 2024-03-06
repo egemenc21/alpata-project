@@ -14,4 +14,3 @@ const router = express_1.default.Router();
 router.use('/', authRoutes);
 router.use('/meetings', meetingRoutes);
 module.exports = router;
-//# sourceMappingURL=index.js.map

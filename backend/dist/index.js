@@ -18,8 +18,6 @@ app.use(cookieParser());
 app.use(cors({
     credentials: true,
     origin: process.env.CLIENT_URL,
-    methods: ["POST", "GET", "PUT", "DELETE"]
 }));
 app.use('/', allRoutes);
 app.listen(4000);
-//# sourceMappingURL=index.js.map

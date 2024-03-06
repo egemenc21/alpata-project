@@ -1,5 +1,7 @@
 import express from "express";
 import { prisma } from "../lib/prisma";
+
+
 const authRoutes = require('./auth')
 const meetingRoutes = require('./meeting')
 

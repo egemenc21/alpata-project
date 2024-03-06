@@ -149,4 +149,3 @@ router.delete("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* 
     res.json({ message: "Meeting deleted" });
 }));
 module.exports = router;
-//# sourceMappingURL=meeting.js.map

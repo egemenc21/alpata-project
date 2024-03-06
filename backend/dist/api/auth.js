@@ -170,4 +170,3 @@ router.post("/sign-out", (req, res) => {
     res.cookie("token", "").json("Sign out has been successful");
 });
 module.exports = router;
-//# sourceMappingURL=auth.js.map
