@@ -1,12 +1,9 @@
 {
   "compilerOptions": {
-      
+      "module": "commonjs",
       "esModuleInterop": true,
       "allowSyntheticDefaultImports": true,
-      "allowImportingTsExtensions": true,
-      "module": "ES2015",
-      "noEmit": true,
-      
+      "allowImportingTsExtensions":true,      
       "target": "es6",
       "noImplicitAny": true,
       "moduleResolution": "node",
@@ -16,7 +13,7 @@
       "paths": {
           "*": ["node_modules/*", "src/types/*"]
       },
-      
+      "noEmit": true
   },
   "include": ["./**/*"]
   }
