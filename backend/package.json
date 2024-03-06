@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon index.ts",
-    "build": "cache clear --force && install && tsc",
+    "build": "tsc",
     "start": "node ./dist/index.js"
   },
   "dependencies": {
