@@ -6,14 +6,14 @@
 2. Then you should go to the project folder with: cd alpata-project
 3. Then you should go to frontend and backend folder one at a time and do the following: 
    To run clientside locally:    
-    cd frontend 
-    yarn
-    yarn dev
+    1. cd frontend 
+    2. yarn
+    3. yarn dev
     
    To run serverside locally:    
-    cd backend 
-    yarn
-    yarn dev
+    1. cd backend 
+    2. npm install
+    3. yarn dev or npm run dev
   
 4. After doing that, you must have an .env file under the backend folder because the code uses this credential data to communicate with the database and send emails.
   DATABASE_URL = EXTERNAL CLOUD DATABASE URL
