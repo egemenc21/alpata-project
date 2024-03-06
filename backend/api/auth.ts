@@ -3,10 +3,13 @@ import {prisma} from "../lib/prisma";
 import multer from "multer";
 import path from "path";
 import jwt from "jsonwebtoken";
+
 const bcrypt = require("bcrypt");
 const router = express.Router();
 const jwtSecret = process.env.JWT_SECRET;
 const bcryptSalt = bcrypt.genSaltSync(12);
+
+
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

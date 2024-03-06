@@ -4,7 +4,7 @@ interface ListItemProps {
 }
 
 function ListItem({title}:ListItemProps) {
-  return <span className="w-[150px] overflow-hidden">{title}</span>
+  return <span className="w-[150px] overflow-hidden text-center">{title}</span>
 }
 
 export default ListItem;

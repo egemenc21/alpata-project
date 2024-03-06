@@ -22,6 +22,7 @@ const emptyFormFields = {
 function Dashboard() {
   const {userData} = useContext(UserContext);
   const {meetings, setMeetings} = useContext(MeetingsContext);
+  
   const [file, setFile] = useState<File>();
   const [formFields, setFormFields] = useState<Meeting>(emptyFormFields);
   const {title, startDate, endDate, description} = formFields;
@@ -78,13 +79,14 @@ function Dashboard() {
       <Navigation />
       <section className="flex flex-col h-screen mt-[150px] items-center gap-10">
         <div className="flex max-lg:flex-col w-full flex-row gap-10 p-4 justify-center">
-          <ul className="">
+          <ul className="flex flex-col gap-2">
             <li className="flex flex-wrap gap-10 p-2 border-b border-black border-solid">
               <ListItem title="Name" />
               <ListItem title="Starting Date" />
               <ListItem title="End Date" />
               <ListItem title="Description" />
               <ListItem title="Document Link" />
+              <ListItem title="Update" />
               <ListItem title="Removed" />
             </li>
             {meetings.map((meeting) => (

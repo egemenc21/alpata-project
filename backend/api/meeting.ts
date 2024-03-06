@@ -4,6 +4,7 @@ import {start} from "repl";
 import path from "path";
 import {parseISO} from "date-fns";
 import multer from "multer";
+import fs from "fs"
 
 const router = express.Router();
 const storage = multer.diskStorage({
@@ -18,6 +19,9 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({storage});
+
+
+
 
 //Get all meetings
 router.get("/:id", async (req, res) => {
@@ -54,7 +58,7 @@ router.post("/", upload.single("file"), async (req, res) => {
     document = await prisma.document.create({
       data: {
         filename: req.file?.filename,
-        link: req.file.path,
+        link: req.file?.path,
         meetingId: meeting.id,
       },
     });
@@ -63,20 +67,54 @@ router.post("/", upload.single("file"), async (req, res) => {
 
 // Update a meeting
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", upload.single("file"), async (req, res) => {
   const {id} = req.params;
-  const {title, startDate, endDate, description, authorId} = req.body;
+  if (!req.file) res.json("No file").status(404);
+
+  console.log(id)
+
+  const {title, startDate, endDate, description, documentId,documentName} = req.body;
+  
+  const integerMeetingId = parseInt(id);
+  const newStartDate = parseISO(startDate);
+  const newEndDate = parseISO(endDate);
+
+  //update meeting
   const updatedMeeting = await prisma.meeting.update({
-    where: {id: parseInt(id)},
+    where: {id: integerMeetingId},
     data: {
       title,
-      startDate,
-      endDate,
+      startDate:newStartDate,
+      endDate:newEndDate,
       description,
-      authorId,
     },
   });
-  res.json(updatedMeeting);
+
+  const filePath = path.join(__dirname, '..', 'public', 'files', documentName);
+
+  //delete the previous document from files
+  if (fs.existsSync(filePath)) {
+    // delete the document 
+    fs.unlinkSync(filePath);
+    console.log('File deleted successfully');
+  } else {
+    console.log('File not found');
+  }
+  
+
+  // update document with new document
+  const updatedDocument = await prisma.document.update({
+    where: {id: parseInt(documentId)},
+    data: {
+      filename: req.file?.filename,
+      link: req.file?.path,
+      meetingId: integerMeetingId,
+    },
+  });
+
+  
+
+  res.json({updatedMeeting, updatedDocument}).status(200);
 });
 
 //Delete a meeting
