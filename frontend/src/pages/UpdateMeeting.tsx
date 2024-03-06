@@ -96,7 +96,7 @@ function UpdateMeeting() {
         
       }
 
-      await axios.put(`/meetings/${meetingID}`, formData);
+      await axios.put(`/meetings/${meetingID}`, formData); 
       await fetchMeetings();
 
       setFormFields(emptyFormFields);

@@ -3,12 +3,20 @@ import {prisma} from "../lib/prisma";
 import multer from "multer";
 import path from "path";
 import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer"
 
 const bcrypt = require("bcrypt");
 const router = express.Router();
 const jwtSecret = process.env.JWT_SECRET;
 const bcryptSalt = bcrypt.genSaltSync(12);
 
+let mailTransporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.SENDER_EMAIL,
+    pass: process.env.SENDER_PASSWORD,
+  },
+});
 
 
 const storage = multer.diskStorage({
@@ -61,7 +69,13 @@ router.post("/register", upload.single("file"), async (req, res) => {
       });
       if (jwtSecret)
         jwt.sign(
-          {id: createdUser.id, name, surname, email, profile_picture: req.file?.filename},
+          {
+            id: createdUser.id,
+            name,
+            surname,
+            email,
+            profile_picture: req.file?.filename,
+          },
           jwtSecret,
           {},
           (err, token) => {
@@ -81,6 +95,24 @@ router.post("/register", upload.single("file"), async (req, res) => {
     } catch (error) {
       if (error) res.status(500).json(error);
     }
+
+    const mailDetails = {
+      from: 'egemenc2101@gmail.com',
+      to: email,
+      subject: 'Welcome to Your Alpata Meeting App!',
+      html: `<p>Welcome, ${name}!</p><p>Your Alpata account has been created successfully.</p>`,
+    };
+
+    mailTransporter
+    .sendMail(mailDetails,
+        function (err, data) {
+            if (err) {
+                console.log(err);
+                res.status(500).json(err);
+            } else {
+              console.log('Email sent: ' + data.response + 'successfully!');
+            }
+        });
   }
 });
 
@@ -114,9 +146,7 @@ router.post("/sign-in", async (req, res) => {
 
   if (foundUser && jwtSecret) {
     const passwordEqual = bcrypt.compareSync(password, foundUser.password);
-    console.log(passwordEqual);
     if (passwordEqual) {
-      console.log("sdfsd");
       jwt.sign(
         {
           id: foundUser.id,

@@ -18,6 +18,7 @@ function Register() {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const [file, setFile] = useState<File>();
   const {userData, setUserData} = useContext(UserContext);
+  const [base64Image, setBase64Image] = useState("");
 
   useEffect(() => {
     if (userData && userData.id) {
@@ -25,22 +26,28 @@ function Register() {
     }
   }, [userData, navigate]);
 
-  const {name, surname, phone, email, password, image} = formFields;
+  const {name, surname, phone, email, password} = formFields;
 
   async function handleSubmit(e: React.ChangeEvent<HTMLFormElement>) {
     e.preventDefault();
-    
+
     const formData = new FormData();
     if (file) {
       formData.append("file", file);
-      formData.append("name", name)
-      formData.append("surname", surname)
-      formData.append("phone", phone)
-      formData.append("email", email)
-      formData.append("password", password)
-    }    
-    const {data} = await axios.post("/register", formData);    
-    setUserData({id: data.id, name, surname, email, profile_picture:data.profile_picture});
+      formData.append("name", name);
+      formData.append("surname", surname);
+      formData.append("phone", phone);
+      formData.append("email", email);
+      formData.append("password", password);
+    }
+    const {data} = await axios.post("/register", formData);
+    setUserData({
+      id: data.id,
+      name,
+      surname,
+      email,
+      profile_picture: data.profile_picture,
+    });
   }
 
   function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -48,24 +55,22 @@ function Register() {
     setFormFields({...formFields, [name]: value});
   }
 
-  // function convertToBase64(e: React.ChangeEvent<HTMLInputElement>) {
-  //   const {name} = e.target;
-  //   const reader = new FileReader()
-  //   if(e.target.files)
-  //       reader.readAsDataURL(e.target.files[0])
-  //       reader.onload = () => {
-  //           console.log(reader.result) // base64encoded string
-  //           setFormFields({...formFields, [name]: reader.result});
-  //       }
-  //       reader.onerror = error => {
-  //           console.log("Error", error)
-  //       }
-  // }
+  function convertToBase64(e: React.ChangeEvent<HTMLInputElement>) {
+    const reader = new FileReader();
+    if (e.target.files) reader.readAsDataURL(e.target.files[0]);
+    reader.onload = () => {
+      console.log(reader.result); // base64encoded string
+      if (typeof reader.result === "string") setBase64Image(reader.result);
+    };
+    reader.onerror = (error) => {
+      console.log("Error", error);
+    };
+  }
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files) {
       setFile(e.target.files[0]);
     }
-    // convertToBase64(e)
+    convertToBase64(e);
   }
 
   return (
@@ -120,16 +125,21 @@ function Register() {
           className="p-3 rounded-lg"
           onChange={handleOnChange}
         />
-        <div className="text-gray-100">Upload a profile photo </div>
-        <input type="file" onChange={handleImageChange} name="file" />
-        {image == "" ? null : (
-          <img
-            src={image}
-            alt="Your profile picture"
-            width={100}
-            height={100}
-          />
-        )}
+        <div className="flex gap-5 justify-center items-center pr-4">
+          <div>
+            <div className="text-gray-100">Upload a profile photo </div>
+            <input type="file" onChange={handleImageChange} name="file" />
+          </div>
+          {base64Image == "" ? null : (
+            <img
+              src={base64Image}
+              alt="Your profile picture"
+              width={100}
+              height={100}
+              className="w-[100px] h-[100px] object-cover rounded-full"
+            />
+          )}
+        </div>
 
         <Button type="submit" buttonType={BUTTON_TYPE_CLASSES.inverted}>
           {" "}
