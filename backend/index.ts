@@ -1,4 +1,4 @@
-import {prisma} from "./lib/prisma.ts";
+import {prisma} from "./lib/prisma";
 import express from "express";
 
 const cookieParser = require('cookie-parser');
@@ -9,7 +9,7 @@ const cors = require("cors");
 // const jwt = require("jsonwebtoken");
 dotenv.config();
 
-const allRoutes = require('./api/index.ts');
+const allRoutes = require('./api/index');
 
 app.use(express.json({limit: "50mb"}));
 app.use("/public/", express.static(__dirname + "/public/"));
