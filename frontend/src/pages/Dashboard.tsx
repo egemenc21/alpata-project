@@ -51,7 +51,7 @@ function Dashboard() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (userData && userData.id) {
+    if (userData && userData.id && userData.email) {
       const formData = new FormData();
       if (file) {
         formData.append("file", file);
@@ -60,6 +60,7 @@ function Dashboard() {
         formData.append("endDate", endDate);
         formData.append("description", description);
         formData.append("authorId", userData.id.toString());
+        formData.append("authorEmail", userData.email.toString());        
       }
 
       await axios.post("/meetings", formData);
